@@ -2358,5 +2358,132 @@ function submitOrder() {
   showToast('🌱 تم إرسال طلبك بنجاح!');
 }
 </script>
+<!-- ========================================== -->
+<!-- ابدأي النسخ من هنا وحطيه قبل وسم </body> مباشرة -->
+<!-- ========================================== -->
+
+<!-- أزرار التحكم باللغات والوضع (ه تظهر تلقائياً في أعلى الصفحة) -->
+<div id="siteControlsContainer">
+    <select id="languageSwitcher">
+        <option value="ar">العربية</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="de">Deutsch</option>
+        <option value="ru">Русский</option>
+        <option value="fa">فارسی</option>
+    </select>
+    <button id="themeToggle" data-key="themeBtn">الوضع الداكن</button>
+</div>
+
+<!-- تنسيقات الألوان والتحكم التلقائي -->
+<style>
+    /* نظام الألوان الفاتح والداكن */
+    :root {
+        --bg-color: #ffffff;
+        --text-color: #222222;
+        --accent-color: #4CAF50;
+    }
+    [data-theme="dark"] {
+        --bg-color: #121212;
+        --text-color: #e0e0e0;
+        --accent-color: #81C784;
+    }
+
+    /* تطبيق الألوان على الصفحة بالكامل */
+    body {
+        background-color: var(--bg-color) !important;
+        color: var(--text-color) !important;
+        transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    /* تنسيق شكل أزرار اللغات والوضع الداكن */
+    #siteControlsContainer {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 99999;
+        display: flex;
+        gap: 8px;
+        background: rgba(128, 128, 128, 0.1);
+        padding: 8px;
+        border-radius: 30px;
+        backdrop-filter: blur(5px);
+    }
+    #languageSwitcher, #themeToggle {
+        padding: 6px 12px;
+        border-radius: 20px;
+        border: 1px solid #ccc;
+        cursor: pointer;
+        font-family: sans-serif;
+        font-size: 14px;
+        background: var(--bg-color);
+        color: var(--text-color);
+    }
+</style>
+
+<!-- تشغيل الترجمة والوضع الداكن تلقائياً -->
+<script>
+    // قاموس الترجمة الجاهز بـ 6 لغات
+    const translations = {
+        ar: { themeBtn: "الوضع الداكن", themeLight: "الوضع الفاتح" },
+        en: { themeBtn: "Dark Mode", themeLight: "Light Mode" },
+        fr: { themeBtn: "Mode Sombre", themeLight: "Mode Clair" },
+        de: { themeBtn: "Dunkelmodus", themeLight: "Hellmodus" },
+        ru: { themeBtn: "Темный режим", themeLight: "Светлый режим" },
+        fa: { themeBtn: "حالت تاریک", themeLight: "حالت روشن" }
+    };
+
+    const rtlLanguages = ['ar', 'fa'];
+    const langSwitcher = document.getElementById('languageSwitcher');
+    const themeToggle = document.getElementById('themeToggle');
+    const htmlElement = document.documentElement;
+
+    function setLanguage(lang) {
+        localStorage.setItem('preferredLang', lang);
+        langSwitcher.value = lang;
+        htmlElement.setAttribute('lang', lang);
+        htmlElement.setAttribute('dir', rtlLanguages.includes(lang) ? 'rtl' : 'ltr');
+
+        // ترجمة أي عنصر يحتوي على data-key
+        document.querySelectorAll('[data-key]').forEach(element => {
+            const key = element.getAttribute('data-key');
+            if (translations[lang] && translations[lang][key]) {
+                element.textContent = translations[lang][key];
+            }
+        });
+        updateThemeBtnText();
+    }
+
+    function toggleTheme() {
+        const currentTheme = htmlElement.getAttribute('data-theme') || 'light';
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        htmlElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('preferredTheme', newTheme);
+        updateThemeBtnText();
+    }
+
+    function updateThemeBtnText() {
+        const currentLang = localStorage.getItem('preferredLang') || 'ar';
+        const currentTheme = htmlElement.getAttribute('data-theme') || 'light';
+        if (currentTheme === 'dark') {
+            themeToggle.textContent = translations[currentLang].themeLight;
+        } else {
+            themeToggle.textContent = translations[currentLang].themeBtn;
+        }
+    }
+
+    langSwitcher.addEventListener('change', (e) => setLanguage(e.target.value));
+    themeToggle.addEventListener('click', toggleTheme);
+
+    // تشغيل الإعدادات المحفوظة فوراً عند فتح الصفحة
+    const savedLang = localStorage.getItem('preferredLang') || 'ar';
+    const savedTheme = localStorage.getItem('preferredTheme') || 'light';
+    htmlElement.setAttribute('data-theme', savedTheme);
+    setLanguage(savedLang);
+</script>
+
+<!-- ========================================== -->
+<!-- انتهى الكود الجاهز -->
+<!-- ========================================== -->
 </body>
 </html>
