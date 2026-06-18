@@ -2358,11 +2358,6 @@ function submitOrder() {
   showToast('🌱 تم إرسال طلبك بنجاح!');
 }
 </script>
-<!-- ========================================== -->
-<!-- ابدأي النسخ من هنا وحطيه قبل وسم </body> مباشرة -->
-<!-- ========================================== -->
-
-<!-- أزرار التحكم باللغات والوضع (ه تظهر تلقائياً في أعلى الصفحة) -->
 <div id="siteControlsContainer">
     <select id="languageSwitcher">
         <option value="ar">العربية</option>
@@ -2375,28 +2370,33 @@ function submitOrder() {
     <button id="themeToggle" data-key="themeBtn">الوضع الداكن</button>
 </div>
 
-<!-- تنسيقات الألوان والتحكم التلقائي -->
 <style>
     /* نظام الألوان الفاتح والداكن */
     :root {
         --bg-color: #ffffff;
-        --text-color: #222222;
-        --accent-color: #4CAF50;
+        --card-bg: #ffffff;
+        --text-color: #333333;
+        --sub-text: #777777;
+        --btn-bg: #eef5ee;
     }
     [data-theme="dark"] {
         --bg-color: #121212;
-        --text-color: #e0e0e0;
-        --accent-color: #81C784;
+        --card-bg: #1e1e1e;
+        --text-color: #ffffff;
+        --sub-text: #b0b0b0;
+        --btn-bg: #2d3a2d;
     }
 
-    /* تطبيق الألوان على الصفحة بالكامل */
+    /* تطبيق الألوان على موقعك أوتوماتيك */
     body {
         background-color: var(--bg-color) !important;
+        background-image: none !important; /* لو حابة تلغي الشبكة في الوضع الداكن */
         color: var(--text-color) !important;
         transition: background 0.3s ease, color 0.3s ease;
     }
+    
+    /* إذا كان الكارت الأبيض عندك له كلاس معين يفضل تلوينه بـ var(--card-bg) */
 
-    /* تنسيق شكل أزرار اللغات والوضع الداكن */
     #siteControlsContainer {
         position: fixed;
         top: 15px;
@@ -2421,16 +2421,63 @@ function submitOrder() {
     }
 </style>
 
-<!-- تشغيل الترجمة والوضع الداكن تلقائياً -->
 <script>
-    // قاموس الترجمة الجاهز بـ 6 لغات
+    // قاموس الترجمة المخصص لموقع VermiLoop بـ 6 لغات كاملة
     const translations = {
-        ar: { themeBtn: "الوضع الداكن", themeLight: "الوضع الفاتح" },
-        en: { themeBtn: "Dark Mode", themeLight: "Light Mode" },
-        fr: { themeBtn: "Mode Sombre", themeLight: "Mode Clair" },
-        de: { themeBtn: "Dunkelmodus", themeLight: "Hellmodus" },
-        ru: { themeBtn: "Темный режим", themeLight: "Светлый режим" },
-        fa: { themeBtn: "حالت تاریک", themeLight: "حالت روشن" }
+        ar: {
+            themeBtn: "الوضع الداكن", themeLight: "الوضع الفاتح",
+            naturalBadge: "طبيعي ١٠٠٪",
+            subTitle: "نظام التدوير الحيوي المتكامل",
+            opt1: "تدوير المخلفات الزراعية",
+            opt2: "معالجة ورد النيل والحلفا",
+            opt3: "فحم نشط لحبس السموم",
+            opt4: "علف أسماك مبتكر"
+        },
+        en: {
+            themeBtn: "Dark Mode", themeLight: "Light Mode",
+            naturalBadge: "100% Natural",
+            subTitle: "Integrated Biocycling System",
+            opt1: "Agricultural Waste Recycling",
+            opt2: "Water Hyacinth & Halfa Treatment",
+            opt3: "Activated Carbon for Toxin Trapping",
+            opt4: "Innovative Fish Feed"
+        },
+        fr: {
+            themeBtn: "Mode Sombre", themeLight: "Mode Clair",
+            naturalBadge: "100% Naturel",
+            subTitle: "Système de Biorecyclage Intégré",
+            opt1: "Recyclage des Déchets Agricoles",
+            opt2: "Traitement de Jacinthe d'Eau & Halfa",
+            opt3: "Charbon Actif pour Piéger les Toxines",
+            opt4: "Aliment Innovant pour Poissons"
+        },
+        de: {
+            themeBtn: "Dunkelmodus", themeLight: "Hellmodus",
+            naturalBadge: "100% Natürlich",
+            subTitle: "Integriertes Biorecyclingsystem",
+            opt1: "Recycling von landwirtschaftlichen Abfällen",
+            opt2: "Wasserhyazinthen- & Halfa-Behandlung",
+            opt3: "Aktivkohle zur Toxinbindung",
+            opt4: "Innovatives Fischfutter"
+        },
+        ru: {
+            themeBtn: "Темный режим", themeLight: "Светлый режим",
+            naturalBadge: "100% Натуральный",
+            subTitle: "Интегрированная система биоциклирования",
+            opt1: "Переработка сельскохозяйственных отходов",
+            opt2: "Очистка от водяного гиацинта и хальфы",
+            opt3: "Активированный уголь для улавливания токсинов",
+            opt4: "Инновационный корм для рыб"
+        },
+        fa: {
+            themeBtn: "حالت تاریک", themeLight: "حالت روشن",
+            naturalBadge: "۱۰۰٪ طبیعی",
+            subTitle: "سیستم یکپارچه بازیافت زیستی",
+            opt1: "بازیافت پسماندهای کشاورزی",
+            opt2: "تصفیه سنبل آبی و هلفا",
+            opt3: "کربن فعال برای به دام انداختن سموم",
+            opt4: "خوراک نوآورانه ماهی"
+        }
     };
 
     const rtlLanguages = ['ar', 'fa'];
@@ -2444,11 +2491,11 @@ function submitOrder() {
         htmlElement.setAttribute('lang', lang);
         htmlElement.setAttribute('dir', rtlLanguages.includes(lang) ? 'rtl' : 'ltr');
 
-        // ترجمة أي عنصر يحتوي على data-key
         document.querySelectorAll('[data-key]').forEach(element => {
             const key = element.getAttribute('data-key');
             if (translations[lang] && translations[lang][key]) {
-                element.textContent = translations[lang][key];
+                // الكود بيلف على كل عنصر ويترجمه
+                element.innerHTML = element.innerHTML.replace(element.textContent.trim(), translations[lang][key]);
             }
         });
         updateThemeBtnText();
@@ -2465,25 +2512,19 @@ function submitOrder() {
     function updateThemeBtnText() {
         const currentLang = localStorage.getItem('preferredLang') || 'ar';
         const currentTheme = htmlElement.getAttribute('data-theme') || 'light';
-        if (currentTheme === 'dark') {
-            themeToggle.textContent = translations[currentLang].themeLight;
-        } else {
-            themeToggle.textContent = translations[currentLang].themeBtn;
+        if (themeToggle) {
+            themeToggle.textContent = currentTheme === 'dark' ? translations[currentLang].themeLight : translations[currentLang].themeBtn;
         }
     }
 
     langSwitcher.addEventListener('change', (e) => setLanguage(e.target.value));
     themeToggle.addEventListener('click', toggleTheme);
 
-    // تشغيل الإعدادات المحفوظة فوراً عند فتح الصفحة
     const savedLang = localStorage.getItem('preferredLang') || 'ar';
     const savedTheme = localStorage.getItem('preferredTheme') || 'light';
     htmlElement.setAttribute('data-theme', savedTheme);
     setLanguage(savedLang);
 </script>
-
-<!-- ========================================== -->
-<!-- انتهى الكود الجاهز -->
-<!-- ========================================== -->
+   
 </body>
 </html>
